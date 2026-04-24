@@ -1,0 +1,29 @@
+services:
+  redis:
+    image: redis:${REDIS_VERSION:-7.2-alpine}
+    command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD}
+    environment:
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+    networks:
+      app_net:
+      monitoring:
+    volumes:
+      - ../../data/redis/${ENV_NAME}:/data
+    deploy:
+      replicas: 1
+      resources:
+        limits:
+          cpus: "${CPU_LIMIT:-0.2}"
+          memory: ${MEM_LIMIT:-256M}
+      placement:
+        constraints:
+          - node.role == manager
+      restart_policy:
+        condition: on-failure
+
+networks:
+  app_net:
+    external: true
+    name: ${APP_NET}
+  monitoring:
+    external: true
