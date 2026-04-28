@@ -5,15 +5,18 @@ services:
       - target: 80
         published: 80
         protocol: tcp
+        mode: host
       - target: 443
         published: 443
         protocol: tcp
+        mode: host
     networks:
       - proxy
       - monitoring
     volumes:
-      - ../../data/caddy/data:/data
-      - ../../data/caddy/config:/config
+      - caddy_data:/data
+      - caddy_config:/config
+      - /var/www/promo:/var/www/promo:ro
     environment:
       - ADMIN_EMAIL=${ADMIN_EMAIL}
       - MODE_ENV=${MODE_ENV}
@@ -26,8 +29,18 @@ services:
       replicas: 1
       placement:
         constraints: [ node.role == manager ]
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 256M
       restart_policy:
         condition: on-failure
+
+volumes:
+  caddy_data:
+    name: "caddy_data_storage"
+  caddy_config:
+    name: "caddy_config_storage"
 
 configs:
   caddy_conf:
