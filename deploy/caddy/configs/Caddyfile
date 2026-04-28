@@ -3,39 +3,43 @@
 }
 
 {$DOMAIN} {
-    reverse_proxy frontend_dev:80
+    root * /var/www/promo
+    file_server
+    encode gzip zstd
 }
 
 dev.{$DOMAIN} {
-    reverse_proxy frontend_prod:80
-}
-
-api.dev.{$DOMAIN} {
-    rewrite / /docs
-    reverse_proxy gateway_dev:1000
+    reverse_proxy frontend_frontend:3000
 }
 
 api.{$DOMAIN} {
-    rewrite / /docs
-    reverse_proxy gateway_prod:1000
+    @root {
+        path /
+    }
+
+    handle @root {
+        redir /docs 301
+    }
+
+    reverse_proxy backend_backend:1000
 }
 
-grafana.{$DOMAIN_PROD} {
-    reverse_proxy grafana:3000
-}
-
-cdn.{$DOMAIN_NAME} {
+cdn.{$DOMAIN} {
     encode gzip zstd
 
     header -Server
     header -X-Amz-Request-Id
     header Cache-Control "public, max-age=31536000"
 
-    reverse_proxy minio_{$MODE_ENV}_minio:9000 {
-        rewrite /{$CDN_BUCKET_NAME}/*
-    }
+    rewrite * /{$CDN_BUCKET_NAME}{uri}
+
+    reverse_proxy minio_minio:9000
 }
 
-cdn-console.{$DOMAIN_NAME} {
-    reverse_proxy minio_{$MODE_ENV}_minio:9001
+cdn-console.{$DOMAIN} {
+    reverse_proxy minio_minio:9001
+}
+
+grafana.{$DOMAIN} {
+    reverse_proxy monitoring_grafana:3000
 }

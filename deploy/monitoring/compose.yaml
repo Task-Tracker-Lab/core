@@ -1,0 +1,47 @@
+services:
+  prometheus:
+    image: prom/prometheus:latest
+    networks:
+      - gateway
+      - monitoring
+    configs:
+      - source: prom_conf
+        target: /etc/prometheus/prometheus.yml
+    volumes:
+      - ../../data/monitoring/prometheus:/prometheus
+    deploy:
+      replicas: 1
+      placement:
+        constraints: [ node.role == manager ]
+
+  grafana:
+    image: grafana/grafana:latest
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD:-admin}
+      - GF_SERVER_HTTP_PORT=2000
+    networks:
+      - monitoring
+      - proxy
+    configs:
+      - source: grafana_datasources
+        target: /etc/grafana/provisioning/datasources/datasources.yaml
+    volumes:
+      - ../../data/monitoring/grafana:/var/lib/grafana
+    deploy:
+      replicas: 1
+      placement:
+        constraints: [ node.role == manager ]
+
+configs:
+  prom_conf:
+    file: ./configs/prometheus.yml
+  grafana_datasources:
+    file: ./configs/datasources.yaml
+
+networks:
+  gateway:
+    external: true
+  proxy:
+    external: true
+  monitoring:
+    external: true

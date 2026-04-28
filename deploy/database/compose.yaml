@@ -1,27 +1,35 @@
 services:
-  postgres:
-    image: postgres:${POSTGRES_VERSION:-16-alpine}
+  database:
+    image: postgres:16-alpine
     environment:
-      - POSTGRES_DB=${DB_NAME}
-      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_DB=${DB_DATABASE}
+      - POSTGRES_USER=${DB_USERNAME}
       - POSTGRES_PASSWORD=${DB_PASSWORD}
     networks:
-      - ${APP_NET}
+      - gateway
       - monitoring
     volumes:
-      - ../../data/database/${ENV_NAME}:/var/lib/postgresql/data
+      - database:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${DB_USERNAME} -d ${DB_DATABASE}" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
     deploy:
       resources:
         limits:
-          cpus: "${CPU_LIMIT:-0.5}"
-          memory: ${MEM_LIMIT:-512M}
+          cpus: '0.5'
+          memory: 512M
       placement:
         constraints:
           - node.role == manager
 
+volumes:
+  database:
+
 networks:
-  app_net:
+  gateway:
     external: true
-    name: ${APP_NET}
   monitoring:
     external: true
