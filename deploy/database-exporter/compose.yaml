@@ -1,0 +1,15 @@
+services:
+  database-exporter:
+    image: prometheuscommunity/postgres-exporter
+    environment:
+      - DATA_SOURCE_NAME=postgresql://${DB_USERNAME}:${DB_PASSWORD}@database:5432/${DB_DATABASE}?sslmode=disable
+    networks:
+      - monitoring
+    deploy:
+      replicas: 1
+      placement:
+        constraints: [ node.role == manager ]
+
+networks:
+  monitoring:
+    external: true

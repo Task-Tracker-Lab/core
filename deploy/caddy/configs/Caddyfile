@@ -41,5 +41,9 @@ cdn-console.{$DOMAIN} {
 }
 
 grafana.{$DOMAIN} {
-    reverse_proxy monitoring_grafana:3000
+    reverse_proxy grafana_grafana:2000
+}
+
+prometheus.{$DOMAIN} {
+    reverse_proxy prometheus_prometheus:9090
 }

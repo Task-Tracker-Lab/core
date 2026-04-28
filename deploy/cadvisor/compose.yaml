@@ -1,0 +1,22 @@
+services:
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor
+    command:
+      - "--docker_only=true"
+      - "--housekeeping_interval=10s"
+      - "--whitelisted_container_labels=com.docker.swarm.service.name,com.docke\
+        r.swarm.stack.name"
+    networks:
+      - monitoring
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /dev/disk/:/dev/disk:ro
+    deploy:
+      mode: global
+
+networks:
+  monitoring:
+    external: true
