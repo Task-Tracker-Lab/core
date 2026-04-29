@@ -62,10 +62,10 @@ services:
         condition: on-failure
       resources:
         limits:
-          cpus: "1.0"
-          memory: 1G
+          cpus: "0.5"
+          memory: 512M
         reservations:
-          cpus: "0.2"
+          cpus: "0.1"
           memory: 256M
       placement:
         constraints:

@@ -16,6 +16,13 @@ services:
       - /dev/disk/:/dev/disk:ro
     deploy:
       mode: global
+      resources:
+        limits:
+          cpus: "0.15"
+          memory: 128M
+        reservations:
+          cpus: "0.05"
+          memory: 64M
 
 networks:
   monitoring:
