@@ -5,6 +5,7 @@
 {$DOMAIN} {
     root * /var/www/promo
     file_server
+    try_files {path} {path}.html {path}/
     encode gzip zstd
 }
 
