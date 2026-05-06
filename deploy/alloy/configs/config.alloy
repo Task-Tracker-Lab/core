@@ -1,0 +1,97 @@
+discovery.docker "docker_containers" {
+  host = "unix:///var/run/docker.sock"
+}
+
+discovery.relabel "docker_containers" {
+  targets = discovery.docker.docker_containers.targets
+
+  rule {
+    source_labels = ["__meta_docker_container_name"]
+    target_label  = "container"
+  }
+}
+
+loki.source.docker "docker_logs" {
+  host       = "unix:///var/run/docker.sock"
+  targets    = discovery.relabel.docker_containers.output
+  forward_to = [loki.process.docker_logs.receiver]
+}
+
+loki.process "docker_logs" {
+  stage.docker {}
+
+  forward_to = [loki.write.local_loki.receiver]
+}
+
+loki.process "frontend_faro_logs" {
+  stage.logfmt {
+    mapping = {
+      app_name        = "",
+      kind            = "",
+      session_id      = "",
+      browser_name    = "",
+      browser_version = "",
+      os_name         = "",
+      screen_width    = "",
+      screen_height   = "",
+    }
+  }
+
+  stage.template {
+    source   = "screen_resolution"
+    template = "{{ if and .screen_width .screen_height }}{{ .screen_width }}x{{ .screen_height }}{{ end }}"
+  }
+
+  stage.labels {
+    values = {
+      app               = "app_name",
+      kind              = "kind",
+      session_id        = "session_id",
+      browser_name      = "browser_name",
+      browser_version   = "browser_version",
+      os_name           = "os_name",
+      screen_resolution = "screen_resolution",
+    }
+  }
+
+  forward_to = [loki.write.local_loki.receiver]
+}
+
+loki.write "local_loki" {
+  endpoint {
+    url = "http://" + sys.env("LOKI_HOST") + ":" + sys.env("LOKI_HTTP_PORT") + "/loki/api/v1/push"
+  }
+}
+
+faro.receiver "frontend" {
+  server {
+    listen_address       = "0.0.0.0"
+    listen_port          = sys.env("ALLOY_FARO_PORT")
+    cors_allowed_origins = ["*"]
+  }
+
+  output {
+    logs   = [loki.process.frontend_faro_logs.receiver]
+    traces = [otelcol.exporter.otlp.tempo.input]
+  }
+}
+
+otelcol.receiver.otlp "ingest" {
+  grpc {
+    endpoint = "0.0.0.0:" + sys.env("ALLOY_OTLP_GRPC_PORT")
+  }
+
+  output {
+    traces = [otelcol.exporter.otlp.tempo.input]
+  }
+}
+
+otelcol.exporter.otlp "tempo" {
+  client {
+    endpoint = sys.env("TEMPO_HOST") + ":" + sys.env("TEMPO_OTLP_GRPC_PORT")
+
+    tls {
+      insecure = true
+    }
+  }
+}

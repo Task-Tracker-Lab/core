@@ -1,1 +1,37 @@
-# gitkeep
+services:
+  loki:
+    image: grafana/loki:latest
+    hostname: loki
+    container_name: loki
+    command:
+      - -config.file=/etc/loki/local-config.yaml
+      - -config.expand-env=true
+    environment:
+      LOKI_HTTP_PORT: ${LOKI_HTTP_PORT}
+      LOKI_GRPC_PORT: ${LOKI_GRPC_PORT}
+    configs:
+      - source: loki_config
+        target: /etc/loki/local-config.yaml
+    volumes:
+      - loki:/loki
+    networks:
+      - monitoring
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 1024M
+        reservations:
+          cpus: "0.2"
+          memory: 512M
+
+configs:
+  loki_config:
+    file: ./configs/loki.yaml
+
+volumes:
+  loki:
+
+networks:
+  monitoring:
+    external: true
