@@ -2,11 +2,14 @@ services:
   frontend:
     image: ghcr.io/task-tracker-lab/frontend:dev
     environment:
-      - NEXT_PUBLIC_API_BASE_URL=${NEXT_PUBLIC_API_BASE_URL}
-      - PORT=3000
+      - OTEL_EXPORTER_OTLP_ENDPOINT=${OTEL_EXPORTER_OTLP_ENDPOINT}
+      - OTEL_EXPORTER_OTLP_PROTOCOL=${OTEL_EXPORTER_OTLP_PROTOCOL}
+      - OTEL_SERVICE_NAME=${OTEL_SERVICE_NAME}
+      - OTEL_RESOURCE_ATTRIBUTES=${OTEL_RESOURCE_ATTRIBUTES}
+      - PORT=${NEXT_PORT}
     networks:
-      - monitoring
       - proxy
+      - monitoring
     healthcheck:
       test:
         [

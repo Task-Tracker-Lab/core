@@ -10,7 +10,7 @@
 }
 
 dev.{$DOMAIN} {
-    reverse_proxy frontend_frontend:3000
+    reverse_proxy frontend_frontend:{$NEXT_PORT}
 }
 
 api.{$DOMAIN} {
@@ -22,7 +22,7 @@ api.{$DOMAIN} {
         redir /docs 301
     }
 
-    reverse_proxy backend_backend:1000
+    reverse_proxy backend_backend:{$BACKEND_PORT}
 }
 
 cdn.{$DOMAIN} {
@@ -34,17 +34,25 @@ cdn.{$DOMAIN} {
 
     rewrite * /{$CDN_BUCKET_NAME}{uri}
 
-    reverse_proxy minio_minio:9000
+    reverse_proxy minio_minio:{$MINIO_PORT}
 }
 
 cdn-console.{$DOMAIN} {
-    reverse_proxy minio_minio:9001
+    reverse_proxy minio_minio:{MINIO_CDN_PORT}
 }
 
 grafana.{$DOMAIN} {
-    reverse_proxy grafana_grafana:2000
+    handle_path /alloy/* {
+        reverse_proxy alloy_alloy:7000
+    }
+
+    reverse_proxy grafana_grafana:{$GRAFANA_PORT}
+}
+
+telemetry.{$DOMAIN} {
+    reverse_proxy /collect alloy_alloy:7001
 }
 
 prometheus.{$DOMAIN} {
-    reverse_proxy prometheus_prometheus:9090
+    reverse_proxy prometheus_prometheus:{$PROMETHEUS_PORT}
 }

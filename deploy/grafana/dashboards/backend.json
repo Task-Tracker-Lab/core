@@ -1300,7 +1300,7 @@
 		"links": [],
 		"liveNow": false,
 		"preload": false,
-		"tags": ["nodejs"],
+		"tags": ["nodejs", "backend", "api", "nestjs", "runtime", "application"],
 		"timeSettings": {
 			"timezone": "browser",
 			"from": "now-1h",

@@ -19,3 +19,18 @@ datasources:
       sslmode: 'disable'
       postgresVersion: 1600
       timescaledb: false
+
+  - name: Loki
+    uid: loki
+    type: loki
+    access: proxy
+    url: http://loki:${LOKI_HTTP_PORT}
+    isDefault: false
+    editable: true
+
+  - name: Tempo
+    uid: tempo
+    type: tempo
+    access: proxy
+    url: http://tempo:${TEMPO_PORT}
+    editable: true

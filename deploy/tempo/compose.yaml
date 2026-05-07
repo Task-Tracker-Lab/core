@@ -1,0 +1,36 @@
+services:
+  tempo:
+    image: grafana/tempo:latest
+    command:
+      - -config.file=/etc/tempo/tempo.yaml
+      - -config.expand-env=true
+    configs:
+      - source: tempo_config
+        target: /etc/tempo/tempo.yaml
+    environment:
+      TEMPO_PORT: ${TEMPO_PORT}
+      TEMPO_OTLP_GRPC_PORT: ${TEMPO_OTLP_GRPC_PORT}
+      TEMPO_OTLP_HTTP_PORT: ${TEMPO_OTLP_HTTP_PORT}
+    volumes:
+      - tempo:/var/tempo
+    networks:
+      - monitoring
+    deploy:
+      resources:
+        limits:
+          cpus: "0.4"
+          memory: 768M
+        reservations:
+          cpus: "0.1"
+          memory: 256M
+
+configs:
+  tempo_config:
+    file: ./configs/tempo.yaml
+
+volumes:
+  tempo:
+
+networks:
+  monitoring:
+    external: true
