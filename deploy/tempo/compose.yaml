@@ -1,12 +1,11 @@
 services:
   tempo:
     image: grafana/tempo:latest
-    container_name: tempo
     command:
       - -config.file=/etc/tempo/tempo.yaml
       - -config.expand-env=true
     configs:
-      - source: tempo
+      - source: tempo_config
         target: /etc/tempo/tempo.yaml
     environment:
       TEMPO_PORT: ${TEMPO_PORT}
@@ -26,7 +25,7 @@ services:
           memory: 256M
 
 configs:
-  tempo-config:
+  tempo_config:
     file: ./configs/tempo.yaml
 
 volumes:

@@ -1,7 +1,6 @@
 services:
   alloy:
     image: grafana/alloy:latest
-    container_name: alloy
     user: root
     environment:
       LOKI_HOST: loki
@@ -9,6 +8,7 @@ services:
       TEMPO_HOST: tempo
       TEMPO_OTLP_GRPC_PORT: ${TEMPO_OTLP_GRPC_PORT}
       ALLOY_OTLP_GRPC_PORT: ${ALLOY_OTLP_GRPC_PORT}
+      ALLOY_FARO_PORT: ${ALLOY_FARO_PORT}
     command:
       - run
       - --server.http.listen-addr=0.0.0.0:${ALLOY_UI_PORT}
@@ -33,9 +33,6 @@ services:
 configs:
   alloy_config:
     file: ./configs/config.alloy
-
-volumes:
-  loki:
 
 networks:
   monitoring:

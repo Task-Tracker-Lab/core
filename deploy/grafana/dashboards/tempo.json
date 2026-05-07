@@ -1,123 +1,165 @@
 {
-	"annotations": {
-		"list": [
-			{
-				"builtIn": 1,
-				"datasource": {
-					"type": "grafana",
-					"uid": "-- Grafana --"
-				},
+	"annotations": [
+		{
+			"kind": "AnnotationQuery",
+			"spec": {
+				"builtIn": true,
 				"enable": true,
 				"hide": true,
 				"iconColor": "rgba(0, 211, 255, 1)",
 				"name": "Annotations & Alerts",
-				"type": "dashboard"
-			}
-		]
-	},
-	"editable": true,
-	"fiscalYearStartMonth": 0,
-	"graphTooltip": 0,
-	"id": null,
-	"links": [],
-	"panels": [
-		{
-			"datasource": {
-				"type": "tempo",
-				"uid": "tempo"
-			},
-			"gridPos": {
-				"h": 10,
-				"w": 24,
-				"x": 0,
-				"y": 0
-			},
-			"id": 2,
-			"targets": [
-				{
+				"query": {
 					"datasource": {
-						"type": "tempo",
-						"uid": "tempo"
+						"name": "-- Grafana --"
 					},
-					"query": "{ resource.service.name =~ \"$service_name\" }",
-					"queryType": "traceqlSearch",
-					"refId": "A"
+					"group": "grafana",
+					"kind": "DataQuery",
+					"spec": {},
+					"version": "v0"
 				}
-			],
-			"title": "Trace Search (Tempo)",
-			"type": "table"
-		},
-		{
-			"gridPos": {
-				"h": 12,
-				"w": 24,
-				"x": 0,
-				"y": 10
-			},
-			"id": 1,
-			"options": {
-				"code": {
-					"language": "markdown",
-					"showLineNumbers": false,
-					"showMiniMap": false
-				},
-				"content": "## Tempo quick queries for frontend\n\nDatasource: `Tempo`\nService variable: `$service_name`\n\n- Errors:\n```traceql\n{ resource.service.name =~ \"$service_name\" && status = error }\n```\n\n- Slow traces (>500ms):\n```traceql\n{ resource.service.name =~ \"$service_name\" && duration > 500ms }\n```\n\n- All frontend traces:\n```traceql\n{ resource.service.name =~ \"$service_name\" }\n```\n\nTip: set time range to last 15m/1h and sort by duration.",
-				"mode": "markdown"
-			},
-			"pluginVersion": "12.2.0",
-			"title": "Tempo TraceQL Cheat Sheet",
-			"type": "text"
+			}
 		}
 	],
+	"cursorSync": "Off",
+	"editable": true,
+	"elements": {
+		"panel-2": {
+			"kind": "Panel",
+			"spec": {
+				"data": {
+					"kind": "QueryGroup",
+					"spec": {
+						"queries": [
+							{
+								"kind": "PanelQuery",
+								"spec": {
+									"hidden": false,
+									"query": {
+										"datasource": {
+											"name": "tempo"
+										},
+										"group": "tempo",
+										"kind": "DataQuery",
+										"spec": {
+											"query": "{ resource.service.name =~ \"$service_name\" }",
+											"queryType": "traceqlSearch"
+										},
+										"version": "v0"
+									},
+									"refId": "A"
+								}
+							}
+						],
+						"queryOptions": {},
+						"transformations": []
+					}
+				},
+				"description": "",
+				"id": 2,
+				"links": [],
+				"title": "Trace Search",
+				"vizConfig": {
+					"group": "table",
+					"kind": "VizConfig",
+					"spec": {
+						"fieldConfig": {
+							"defaults": {
+								"custom": {
+									"align": "auto",
+									"cellOptions": {
+										"type": "auto"
+									},
+									"footer": {
+										"reducers": []
+									},
+									"inspect": false
+								},
+								"thresholds": {
+									"mode": "absolute",
+									"steps": [
+										{
+											"color": "green",
+											"value": 0
+										},
+										{
+											"color": "red",
+											"value": 80
+										}
+									]
+								}
+							},
+							"overrides": []
+						},
+						"options": {
+							"cellHeight": "sm",
+							"showHeader": true,
+							"sortBy": [
+								{
+									"desc": true,
+									"displayName": "Trace ID"
+								}
+							]
+						}
+					},
+					"version": "13.0.1"
+				}
+			}
+		}
+	},
+	"layout": {
+		"kind": "GridLayout",
+		"spec": {
+			"items": [
+				{
+					"kind": "GridLayoutItem",
+					"spec": {
+						"element": {
+							"kind": "ElementReference",
+							"name": "panel-2"
+						},
+						"height": 30,
+						"width": 24,
+						"x": 0,
+						"y": 0
+					}
+				}
+			]
+		}
+	},
+	"links": [],
+	"liveNow": false,
 	"preload": false,
-	"refresh": "10s",
-	"schemaVersion": 40,
-	"tags": ["task-tracker", "frontend", "tempo", "traces"],
-	"templating": {
-		"list": [
-			{
+	"tags": ["frontend", "nextjs", "tempo", "traces"],
+	"timeSettings": {
+		"autoRefresh": "10s",
+		"autoRefreshIntervals": ["5s", "10s", "30s", "1m", "5m", "15m", "30m", "1h", "2h", "1d"],
+		"fiscalYearStartMonth": 0,
+		"from": "now-1h",
+		"hideTimepicker": false,
+		"timezone": "browser",
+		"to": "now"
+	},
+	"title": "Frontend Traces (Tempo)",
+	"variables": [
+		{
+			"kind": "CustomVariable",
+			"spec": {
+				"allValue": ".*",
+				"allowCustomValue": true,
 				"current": {
-					"selected": true,
 					"text": "All",
 					"value": "$__all"
 				},
-				"hide": 0,
+				"hide": "dontHide",
 				"includeAll": true,
 				"label": "service_name",
 				"multi": false,
-				"name": "service_name",
-				"options": [
-					{
-						"selected": true,
-						"text": "All",
-						"value": "$__all"
-					},
-					{
-						"selected": false,
-						"text": "ttopen-backend",
-						"value": "ttopen-backend"
-					},
-					{
-						"selected": false,
-						"text": "ttopen-frontend",
-						"value": "ttopen-frontend"
-					}
-				],
+				"name": "service",
+				"options": [],
 				"query": "ttopen-frontend",
 				"skipUrlSync": false,
-				"type": "custom",
-				"allValue": ".*"
+				"valuesFormat": "csv"
 			}
-		]
-	},
-	"time": {
-		"from": "now-1h",
-		"to": "now"
-	},
-	"timepicker": {},
-	"timezone": "",
-	"title": "Frontend Traces (Tempo)",
-	"uid": "task-tracker-frontend-traces-tempo",
-	"version": 1,
-	"weekStart": ""
+		}
+	]
 }

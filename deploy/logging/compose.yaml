@@ -2,7 +2,6 @@ services:
   loki:
     image: grafana/loki:latest
     hostname: loki
-    container_name: loki
     command:
       - -config.file=/etc/loki/local-config.yaml
       - -config.expand-env=true

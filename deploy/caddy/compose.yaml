@@ -22,6 +22,16 @@ services:
       - MODE_ENV=${MODE_ENV}
       - DOMAIN=${DOMAIN}
       - CDN_BUCKET_NAME=${CDN_BUCKET_NAME}
+
+      - NEXT_PORT=${NEXT_PORT}
+      - BACKEND_PORT=${BACKEND_PORT}
+
+      - ALLOY_FARO_PORT=${ALLOY_FARO_PORT}
+      # TODO: ADD TO GLOBAL CONFIG
+      - MINIO_PORT=9000
+      - MINIO_CDN_PORT=9001
+      - GRAFANA_PORT=2000
+      - PROMETHEUS_PORT=9090
     configs:
       - source: caddy_conf
         target: /etc/caddy/Caddyfile
