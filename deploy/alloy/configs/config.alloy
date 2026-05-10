@@ -14,19 +14,58 @@ discovery.relabel "docker_containers" {
 loki.source.docker "docker_logs" {
   host       = "unix:///var/run/docker.sock"
   targets    = discovery.relabel.docker_containers.output
-  forward_to = [loki.process.docker_logs.receiver]
+  forward_to = [loki.process.backend_enhanced.receiver]
 }
 
-loki.process "docker_logs" {
+loki.process "backend_enhanced" {
   stage.docker {}
+
+  stage.json {
+    source = "output"
+    expressions = {
+      level     = "level",
+      message   = "message",
+      ctx_raw   = "context",
+    }
+  }
+
+  stage.json {
+    source = "ctx_raw"
+    expressions = {
+      method       = "method",
+      path         = "path",
+      status       = "status_code",
+      duration     = "delay_num",
+      request_id   = "request_id",
+      type         = "type",
+      controller   = "controller",
+      handler      = "handler",
+      body         = "body",
+      query        = "query",
+      stack        = "stack",
+      error_details = "error_details",
+    }
+  }
+
+  stage.labels {
+    values = {
+      level      = "level",
+      method     = "method",
+      status     = "status_code",
+      path       = "path",
+      log_type   = "log_type",
+      controller = "controller",
+      service    = "app_name",
+    }
+  }
 
   forward_to = [loki.write.local_loki.receiver]
 }
 
-loki.process "frontend_faro_logs" {
+loki.process "frontend_enhanced" {
   stage.logfmt {
     mapping = {
-      app_name        = "",
+      app_name        = "app",
       kind            = "",
       session_id      = "",
       browser_name    = "",
@@ -34,21 +73,20 @@ loki.process "frontend_faro_logs" {
       os_name         = "",
       screen_width    = "",
       screen_height   = "",
+      url             = "",
     }
   }
 
   stage.template {
     source   = "screen_resolution"
-    template = "{{ if and .screen_width .screen_height }}{{ .screen_width }}x{{ .screen_height }}{{ end }}"
+    template = "{{ if and .screen_width .screen_height }}{{ .screen_width }}x{{ .screen_height }}{{ else }}unknown{{ end }}"
   }
 
   stage.labels {
     values = {
       app               = "app_name",
-      kind              = "kind",
-      session_id        = "session_id",
-      browser_name      = "browser_name",
-      browser_version   = "browser_version",
+      kind          = "kind",
+      browser_name           = "browser_name",
       os_name           = "os_name",
       screen_resolution = "screen_resolution",
     }
@@ -71,7 +109,7 @@ faro.receiver "frontend" {
   }
 
   output {
-    logs   = [loki.process.frontend_faro_logs.receiver]
+    logs   = [loki.process.frontend_enhanced.receiver]
     traces = [otelcol.exporter.otlp.tempo.input]
   }
 }

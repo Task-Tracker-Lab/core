@@ -42,10 +42,6 @@ cdn-console.{$DOMAIN} {
 }
 
 grafana.{$DOMAIN} {
-    handle_path /alloy/* {
-        reverse_proxy alloy_alloy:7000
-    }
-
     reverse_proxy grafana_grafana:{$GRAFANA_PORT}
 }
 
