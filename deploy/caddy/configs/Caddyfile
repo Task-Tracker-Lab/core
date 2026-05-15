@@ -28,17 +28,25 @@ api.{$DOMAIN} {
 cdn.{$DOMAIN} {
     encode gzip zstd
 
+    log {
+        output file /var/log/caddy/s3_access.log
+        format json
+    }
+
     header -Server
     header -X-Amz-Request-Id
     header Cache-Control "public, max-age=31536000"
 
-    rewrite * /{$CDN_BUCKET_NAME}{uri}
-
-    reverse_proxy minio_minio:{$MINIO_PORT}
+    reverse_proxy storage_storage:9000
 }
 
 cdn-console.{$DOMAIN} {
-    reverse_proxy minio_minio:{MINIO_CDN_PORT}
+    reverse_proxy storage_storage:9001 {
+        header_up Host {host}
+        header_up X-Real-IP {remote_host}
+    }
+
+    header -Server
 }
 
 grafana.{$DOMAIN} {

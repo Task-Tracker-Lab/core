@@ -1,0 +1,16 @@
+{
+	"Rules": [
+		{
+			"ID": "DeleteTmpFiles",
+			"Status": "Enabled",
+			"Expiration": { "Days": 7 },
+			"Filter": { "Prefix": "tmp/" }
+		},
+		{
+			"ID": "CleanOldVersions",
+			"Status": "Enabled",
+			"NoncurrentVersionExpiration": { "NoncurrentDays": 30 },
+			"Filter": { "Prefix": "" }
+		}
+	]
+}
