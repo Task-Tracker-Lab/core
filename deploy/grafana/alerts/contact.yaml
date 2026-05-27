@@ -1,0 +1,26 @@
+apiVersion: 1
+
+contactPoints:
+    - orgId: 1
+      name: Alert Bot
+      receivers:
+        - uid: afnc86kd37rwga
+          type: telegram
+          settings:
+            bottoken: "${TELEGRAM_BOT_TOKEN}"
+            chatid: "${TELEGRAM_CHAT_ID}"
+            disable_notification: true
+            disable_web_page_preview: true
+            message: "<b>{{ .Status | toUpper }}</b>: {{ .Alerts.Firing | len }} алертов сработало\n\n{{ range .Alerts.Firing }}\n\U0001F4CC <b>{{ .Labels.alertname }}</b>\n{{ if .Labels.container_label_com_docker_swarm_service_name }}\U0001F4E6 Сервис: <code>{{ .Labels.container_label_com_docker_swarm_service_name }}</code>{{ else }}\U0001F5A5️ Хост: <code>{{ .Labels.instance }}</code>{{ end }}\nℹ️ Описание: {{ .Annotations.description }}\n{{ end }}"
+            message_thread_id: "${TELEGRAM_CHAT_TOPIC_ID}"
+            parse_mode: HTML
+            protect_content: false
+          disableResolveMessage: false
+
+policies:
+  - orgId: 1
+    receiver: Alert Bot
+    group_by: ['alertname', 'instance']
+    group_wait: 30s
+    group_interval: 5m
+    repeat_interval: 4h

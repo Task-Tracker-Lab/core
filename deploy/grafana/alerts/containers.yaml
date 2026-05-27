@@ -1,0 +1,74 @@
+apiVersion: 1
+groups:
+    - orgId: 1
+      name: containers
+      folder: Infrastructure
+      interval: 1m
+      rules:
+        - uid: afnclzy4wb280b
+          title: Container Down
+          condition: C
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: PBFA97CFB590B2093
+              model:
+                editorMode: code
+                expr: time() - container_last_seen
+                instant: true
+                intervalMs: 1000
+                legendFormat: __auto
+                maxDataPoints: 43200
+                range: false
+                refId: A
+            - refId: C
+              queryType: expression
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 60
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - C
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: A
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: threshold
+          noDataState: KeepLast
+          execErrState: Alerting
+          for: 1m
+          annotations:
+            summary: "🔴 <b>[CRIT] Container Down</b> — упал контейнер <code>{{ $labels.container }}</code>"
+            description: |
+              💀 <b>Обнаружено падение или остановка контейнера!</b>
+
+              📦 <b>Контейнер:</b> <code>{{ $labels.container }}</code>
+              🖼️ <b>Образ:</b> <code>{{ $labels.image }}</code>
+              🖥️ <b>Хост:</b> <code>{{ $labels.instance }}</code>
+
+              📉 <b>Текущее состояние:</b> Контейнер не отвечает и не отправляет метрики уже более 1 минуты. Возможно, процесс завершился с ошибкой (<code>CrashLoopBackOff</code> / <code>OOMKilled</code>) либо контейнер был удален.
+
+              ⚡ <b>Рекомендуемые действия:</b>
+              1. Проверить статус контейнера на хосте:
+              <code>docker ps -a | grep {{ $labels.container }}</code>
+              2. Изучить последние логи упавшего контейнера:
+              <code>docker logs --tail 100 {{ $labels.container }}</code>
+          labels: {}
+          isPaused: false
+          notification_settings:
+            receiver: Alert Bot

@@ -4,19 +4,26 @@
 	"metadata": {
 		"name": "000000039",
 		"namespace": "default",
-		"uid": "1b37706b-048f-4a9b-9d57-a8f11c7d5a49",
-		"resourceVersion": "1777384137275987",
+		"uid": "f4d206f5-c404-4618-a458-d960ef89b879",
+		"resourceVersion": "1779905623095998",
 		"generation": 2,
-		"creationTimestamp": "2026-04-28T13:45:17Z",
+		"creationTimestamp": "2026-05-27T15:12:24Z",
 		"labels": {
-			"grafana.app/deprecatedInternalID": "4488555465240576"
+			"grafana.app/deprecatedInternalID": "1508928545816576"
 		},
 		"annotations": {
-			"grafana.app/createdBy": "user:afkg7oabos2kga",
-			"grafana.app/folder": "",
-			"grafana.app/saved-from-ui": "Grafana v13.0.1 (a100054f)",
-			"grafana.app/updatedBy": "user:afkg7oabos2kga",
-			"grafana.app/updatedTimestamp": "2026-04-28T13:48:57Z"
+			"grafana.app/createdBy": "access-policy:service",
+			"grafana.app/folder": "ffnc7lgaxgzcwd",
+			"grafana.app/managedBy": "classic-file-provisioning",
+			"grafana.app/managerId": "Task Tracker",
+			"grafana.app/saved-from-ui": "Grafana v13.0.1+security-01 (9bbe672d)",
+			"grafana.app/sourceChecksum": "89c904fe3f7a2be7c8293361b45aa631",
+			"grafana.app/sourcePath": "/etc/grafana/provisioning/dashboards/json_files/database.json",
+			"grafana.app/sourceTimestamp": "1778240894000",
+			"grafana.app/updatedBy": "user:afnc6ch5frjswa",
+			"grafana.app/updatedTimestamp": "2026-05-27T18:13:43Z",
+			"grafana.app/folderTitle": "Infrastructure",
+			"grafana.app/folderUrl": "/dashboards/f/ffnc7lgaxgzcwd/infrastructure"
 		}
 	},
 	"spec": {

@@ -3,10 +3,21 @@
 	"kind": "Dashboard",
 	"metadata": {
 		"name": "adrxq42",
-		"generation": 102,
-		"creationTimestamp": "2026-05-08T15:08:47Z",
-		"labels": {},
-		"annotations": {}
+		"namespace": "default",
+		"uid": "5d6257c9-5e99-4e09-8732-848c62eccf07",
+		"resourceVersion": "1779905745404005",
+		"generation": 1,
+		"creationTimestamp": "2026-05-27T18:15:45Z",
+		"labels": {
+			"grafana.app/deprecatedInternalID": "1555068300664832"
+		},
+		"annotations": {
+			"grafana.app/createdBy": "user:afnc6ch5frjswa",
+			"grafana.app/folder": "ffnc7lgaxgzcwd",
+			"grafana.app/saved-from-ui": "Grafana v13.0.1+security-01 (9bbe672d)",
+			"grafana.app/folderTitle": "Infrastructure",
+			"grafana.app/folderUrl": "/dashboards/f/ffnc7lgaxgzcwd/infrastructure"
+		}
 	},
 	"spec": {
 		"annotations": [
@@ -17,10 +28,10 @@
 						"kind": "DataQuery",
 						"group": "grafana",
 						"version": "v0",
-						"spec": {},
 						"labels": {
 							"grafana.app/export-label": "grafana-1"
-						}
+						},
+						"spec": {}
 					},
 					"enable": true,
 					"hide": true,
@@ -51,6 +62,9 @@
 											"kind": "DataQuery",
 											"group": "loki",
 											"version": "v0",
+											"datasource": {
+												"name": "loki"
+											},
 											"spec": {
 												"direction": "backward",
 												"editorMode": "code",
@@ -58,9 +72,6 @@
 												"legendFormat": "{{path}} - Status: {{status}}",
 												"queryType": "range",
 												"step": ""
-											},
-											"labels": {
-												"grafana.app/export-label": "loki-1"
 											}
 										},
 										"refId": "A",
@@ -180,14 +191,14 @@
 											"kind": "DataQuery",
 											"group": "prometheus",
 											"version": "v0",
+											"datasource": {
+												"name": "PBFA97CFB590B2093"
+											},
 											"spec": {
 												"editorMode": "code",
 												"expr": "process_resident_memory_bytes{instance=~\"$instance\"}",
 												"legendFormat": "Process Memory - {{instance}}",
 												"range": true
-											},
-											"labels": {
-												"grafana.app/export-label": "prometheus-1"
 											}
 										},
 										"refId": "A",
@@ -201,15 +212,15 @@
 											"kind": "DataQuery",
 											"group": "prometheus",
 											"version": "v0",
+											"datasource": {
+												"name": "PBFA97CFB590B2093"
+											},
 											"spec": {
 												"editorMode": "code",
 												"expr": "nodejs_heap_size_total_bytes{instance=~\"$instance\"}",
 												"instant": false,
 												"legendFormat": "Heap Total - {{instance}}",
 												"range": true
-											},
-											"labels": {
-												"grafana.app/export-label": "prometheus-1"
 											}
 										},
 										"refId": "B",
@@ -223,15 +234,15 @@
 											"kind": "DataQuery",
 											"group": "prometheus",
 											"version": "v0",
+											"datasource": {
+												"name": "PBFA97CFB590B2093"
+											},
 											"spec": {
 												"editorMode": "code",
 												"expr": "nodejs_heap_size_used_bytes{instance=~\"$instance\"}",
 												"instant": false,
 												"legendFormat": "Heap Used - {{instance}}",
 												"range": true
-											},
-											"labels": {
-												"grafana.app/export-label": "prometheus-1"
 											}
 										},
 										"refId": "C",
@@ -245,15 +256,15 @@
 											"kind": "DataQuery",
 											"group": "prometheus",
 											"version": "v0",
+											"datasource": {
+												"name": "PBFA97CFB590B2093"
+											},
 											"spec": {
 												"editorMode": "code",
 												"expr": "nodejs_external_memory_bytes{instance=~\"$instance\"}",
 												"instant": false,
 												"legendFormat": "External Memory - {{instance}}",
 												"range": true
-											},
-											"labels": {
-												"grafana.app/export-label": "prometheus-1"
 											}
 										},
 										"refId": "D",
@@ -367,14 +378,14 @@
 											"kind": "DataQuery",
 											"group": "prometheus",
 											"version": "v0",
+											"datasource": {
+												"name": "PBFA97CFB590B2093"
+											},
 											"spec": {
 												"editorMode": "code",
 												"expr": "irate(process_cpu_user_seconds_total{instance=~\"$instance\"}[2m]) * 100",
 												"legendFormat": "User CPU",
 												"range": true
-											},
-											"labels": {
-												"grafana.app/export-label": "prometheus-1"
 											}
 										},
 										"refId": "A",
@@ -388,15 +399,15 @@
 											"kind": "DataQuery",
 											"group": "prometheus",
 											"version": "v0",
+											"datasource": {
+												"name": "PBFA97CFB590B2093"
+											},
 											"spec": {
 												"editorMode": "code",
 												"expr": "irate(process_cpu_system_seconds_total{instance=~\"$instance\"}[2m]) * 100",
 												"instant": false,
 												"legendFormat": "Sys CPU",
 												"range": true
-											},
-											"labels": {
-												"grafana.app/export-label": "prometheus-1"
 											}
 										},
 										"refId": "B",
@@ -508,14 +519,14 @@
 											"kind": "DataQuery",
 											"group": "prometheus",
 											"version": "v0",
+											"datasource": {
+												"name": "PBFA97CFB590B2093"
+											},
 											"spec": {
 												"editorMode": "code",
 												"expr": "sum(nodejs_version_info{instance=~\"$instance\"}) by (version)",
 												"legendFormat": "{{version}}",
 												"range": true
-											},
-											"labels": {
-												"grafana.app/export-label": "prometheus-1"
 											}
 										},
 										"refId": "A",
@@ -588,14 +599,14 @@
 											"kind": "DataQuery",
 											"group": "prometheus",
 											"version": "v0",
+											"datasource": {
+												"name": "PBFA97CFB590B2093"
+											},
 											"spec": {
 												"editorMode": "code",
 												"expr": "sum(changes(process_start_time_seconds{instance=~\"$instance\"}[1m]))",
 												"legendFormat": "{{instance}}",
 												"range": true
-											},
-											"labels": {
-												"grafana.app/export-label": "prometheus-1"
 											}
 										},
 										"refId": "A",
@@ -686,14 +697,14 @@
 											"kind": "DataQuery",
 											"group": "prometheus",
 											"version": "v0",
+											"datasource": {
+												"name": "PBFA97CFB590B2093"
+											},
 											"spec": {
 												"editorMode": "code",
 												"expr": "histogram_quantile(0.95, sum by (le, kind) (rate(nodejs_gc_duration_seconds_bucket[$__rate_interval])))",
 												"legendFormat": "__auto",
 												"range": true
-											},
-											"labels": {
-												"grafana.app/export-label": "prometheus-1"
 											}
 										},
 										"refId": "A",
@@ -804,14 +815,14 @@
 											"kind": "DataQuery",
 											"group": "prometheus",
 											"version": "v0",
+											"datasource": {
+												"name": "PBFA97CFB590B2093"
+											},
 											"spec": {
 												"editorMode": "code",
 												"expr": "nodejs_active_handles_total{instance=~\"$instance\"}",
 												"legendFormat": "Active Handler",
 												"range": true
-											},
-											"labels": {
-												"grafana.app/export-label": "prometheus-1"
 											}
 										},
 										"refId": "A",
@@ -825,15 +836,15 @@
 											"kind": "DataQuery",
 											"group": "prometheus",
 											"version": "v0",
+											"datasource": {
+												"name": "PBFA97CFB590B2093"
+											},
 											"spec": {
 												"editorMode": "code",
 												"expr": "nodejs_active_requests_total{instance=~\"$instance\"}",
 												"instant": false,
 												"legendFormat": "Active Request",
 												"range": true
-											},
-											"labels": {
-												"grafana.app/export-label": "prometheus-1"
 											}
 										},
 										"refId": "B",
@@ -945,14 +956,14 @@
 											"kind": "DataQuery",
 											"group": "prometheus",
 											"version": "v0",
+											"datasource": {
+												"name": "PBFA97CFB590B2093"
+											},
 											"spec": {
 												"editorMode": "code",
 												"expr": "sum by (kind) (rate(nodejs_gc_duration_seconds_count[$__rate_interval]))",
 												"legendFormat": "__auto",
 												"range": true
-											},
-											"labels": {
-												"grafana.app/export-label": "prometheus-1"
 											}
 										},
 										"refId": "A",
@@ -1035,15 +1046,15 @@
 											"kind": "DataQuery",
 											"group": "prometheus",
 											"version": "v0",
+											"datasource": {
+												"name": "PBFA97CFB590B2093"
+											},
 											"spec": {
 												"editorMode": "code",
 												"exemplar": false,
 												"expr": "nodejs_heap_space_size_total_bytes{instance=~\"$instance\"}",
 												"legendFormat": "Heap Total - Space={{space}}",
 												"range": true
-											},
-											"labels": {
-												"grafana.app/export-label": "prometheus-1"
 											}
 										},
 										"refId": "A",
@@ -1151,14 +1162,14 @@
 											"kind": "DataQuery",
 											"group": "prometheus",
 											"version": "v0",
+											"datasource": {
+												"name": "PBFA97CFB590B2093"
+											},
 											"spec": {
 												"editorMode": "code",
 												"expr": "nodejs_heap_space_size_used_bytes{instance=~\"$instance\"}",
 												"legendFormat": "Heap Used - Space={{space}}",
 												"range": true
-											},
-											"labels": {
-												"grafana.app/export-label": "prometheus-1"
 											}
 										},
 										"refId": "A",
@@ -1266,14 +1277,14 @@
 											"kind": "DataQuery",
 											"group": "prometheus",
 											"version": "v0",
+											"datasource": {
+												"name": "PBFA97CFB590B2093"
+											},
 											"spec": {
 												"editorMode": "code",
 												"expr": "nodejs_heap_space_size_available_bytes{instance=~\"$instance\"}",
 												"legendFormat": "Heap Used - Space={{space}}",
 												"range": true
-											},
-											"labels": {
-												"grafana.app/export-label": "prometheus-1"
 											}
 										},
 										"refId": "A",
@@ -1381,6 +1392,9 @@
 											"kind": "DataQuery",
 											"group": "loki",
 											"version": "v0",
+											"datasource": {
+												"name": "loki"
+											},
 											"spec": {
 												"direction": "backward",
 												"editorMode": "code",
@@ -1388,9 +1402,6 @@
 												"legendFormat": "",
 												"maxLines": 2500,
 												"queryType": "range"
-											},
-											"labels": {
-												"grafana.app/export-label": "loki-1"
 											}
 										},
 										"refId": "A",
@@ -1454,15 +1465,15 @@
 											"kind": "DataQuery",
 											"group": "prometheus",
 											"version": "v0",
+											"datasource": {
+												"name": "PBFA97CFB590B2093"
+											},
 											"spec": {
 												"direction": "backward",
 												"editorMode": "code",
 												"expr": "avg by (method, path) (\r\n  avg_over_time(\r\n    {container=~\"$service_name\"} \r\n    | json delay=\"context.delay_num\", path=\"context.path\", method=\"context.method\"\r\n    | delay != \"\"\r\n    | unwrap delay [$__range]\r\n  )\r\n)",
 												"legendFormat": "Path: {{method}} {{path}}",
 												"queryType": "range"
-											},
-											"labels": {
-												"grafana.app/export-label": "prometheus-2"
 											}
 										},
 										"refId": "A",
@@ -1557,15 +1568,15 @@
 											"kind": "DataQuery",
 											"group": "loki",
 											"version": "v0",
+											"datasource": {
+												"name": "loki"
+											},
 											"spec": {
 												"direction": "backward",
 												"editorMode": "code",
 												"expr": "sum by (path) (\r\n  rate(\r\n    {container=~\"$service_name\"} | json | context_type = \"request\" | label_format path=\"{{.context_path}}\" [$__interval]\r\n  )\r\n)",
 												"legendFormat": "{{path}}",
 												"queryType": "range"
-											},
-											"labels": {
-												"grafana.app/export-label": "loki-1"
 											}
 										},
 										"refId": "A",
@@ -1667,15 +1678,15 @@
 											"kind": "DataQuery",
 											"group": "loki",
 											"version": "v0",
+											"datasource": {
+												"name": "loki"
+											},
 											"spec": {
 												"direction": "backward",
 												"editorMode": "code",
 												"expr": "sum by (method, path) (\r\n  quantile_over_time(0.95,\r\n    {container=~\"$service_name\"} \r\n    | json delay=\"context.delay_num\", path=\"context.path\", type=\"context.type\", method=\"context.method\"\r\n    | __error__=\"\" \r\n    | type = \"response\"\r\n    | delay != \"\" \r\n    | unwrap delay \r\n    [$__interval]\r\n  )\r\n)",
 												"legendFormat": "Path {{method}} {{path}}",
 												"queryType": "range"
-											},
-											"labels": {
-												"grafana.app/export-label": "loki-1"
 											}
 										},
 										"refId": "A",
@@ -1792,15 +1803,15 @@
 											"kind": "DataQuery",
 											"group": "loki",
 											"version": "v0",
+											"datasource": {
+												"name": "loki"
+											},
 											"spec": {
 												"direction": "backward",
 												"editorMode": "code",
 												"expr": "sum by (path) (\r\n  rate(\r\n    {container=~\"$service_name\"} \r\n    | json path=\"context.path\", type=\"context.type\"\r\n    | __error__=\"\" \r\n    | type = \"request\"\r\n    [$__interval]\r\n  )\r\n)",
 												"legendFormat": "{{path}}",
 												"queryType": "range"
-											},
-											"labels": {
-												"grafana.app/export-label": "loki-1"
 											}
 										},
 										"refId": "A",
@@ -1814,15 +1825,15 @@
 											"kind": "DataQuery",
 											"group": "loki",
 											"version": "v0",
+											"datasource": {
+												"name": "loki"
+											},
 											"spec": {
 												"direction": "backward",
 												"editorMode": "code",
 												"expr": "sum by (path) (\r\n  rate(\r\n    {container=~\"$service_name\"} \r\n    | json path=\"path=context.path\", status=\"context.status_code\", type=\"context.type\"\r\n    | __error__=\"\" \r\n    | type = \"response\"\r\n    | status !~ \"2..\" \r\n    [$__interval]\r\n  )\r\n)",
 												"legendFormat": "{{status}}",
 												"queryType": "range"
-											},
-											"labels": {
-												"grafana.app/export-label": "loki-1"
 											}
 										},
 										"refId": "B",
@@ -1990,15 +2001,15 @@
 											"kind": "DataQuery",
 											"group": "loki",
 											"version": "v0",
+											"datasource": {
+												"name": "loki"
+											},
 											"spec": {
 												"direction": "backward",
 												"editorMode": "code",
 												"expr": "sum by (path) (\r\n  avg_over_time(\r\n    {container=~\"$service_name\"} \r\n    | json delay=\"context.delay_num\", path=\"context.path\", type=\"context.type\"\r\n    | type = \"response\"\r\n    | unwrap delay \r\n    | delay > 500\r\n    [$__interval]\r\n  )\r\n)",
 												"legendFormat": "{{path}}",
 												"queryType": "range"
-											},
-											"labels": {
-												"grafana.app/export-label": "loki-1"
 											}
 										},
 										"refId": "A",
@@ -2085,15 +2096,15 @@
 											"kind": "DataQuery",
 											"group": "loki",
 											"version": "v0",
+											"datasource": {
+												"name": "loki"
+											},
 											"spec": {
 												"direction": "backward",
 												"editorMode": "code",
 												"expr": "sum by (level) (count_over_time({container=~\"$service_name\"} [$__interval]))",
 												"legendFormat": "{{level}}",
 												"queryType": "range"
-											},
-											"labels": {
-												"grafana.app/export-label": "loki-1"
 											}
 										},
 										"refId": "A",
@@ -2203,14 +2214,14 @@
 											"kind": "DataQuery",
 											"group": "prometheus",
 											"version": "v0",
+											"datasource": {
+												"name": "PBFA97CFB590B2093"
+											},
 											"spec": {
 												"editorMode": "code",
 												"expr": "nodejs_eventloop_lag_seconds{instance=~\"$instance\"}",
 												"legendFormat": "{{instance}}",
 												"range": true
-											},
-											"labels": {
-												"grafana.app/export-label": "prometheus-1"
 											}
 										},
 										"refId": "A",
@@ -2676,13 +2687,13 @@
 						"kind": "DataQuery",
 						"group": "prometheus",
 						"version": "v0",
+						"datasource": {
+							"name": "PBFA97CFB590B2093"
+						},
 						"spec": {
 							"qryType": 1,
 							"query": "label_values({job=\"nestjs-backend\"},instance)",
 							"refId": "PrometheusVariableQueryEditor-VariableQuery"
-						},
-						"labels": {
-							"grafana.app/export-label": "prometheus-1"
 						}
 					},
 					"regex": "",
@@ -2711,14 +2722,14 @@
 						"kind": "DataQuery",
 						"group": "loki",
 						"version": "v0",
+						"datasource": {
+							"name": "loki"
+						},
 						"spec": {
 							"label": "container",
 							"refId": "LokiVariableQueryEditor-VariableQuery",
 							"stream": "",
 							"type": 1
-						},
-						"labels": {
-							"grafana.app/export-label": "loki-1"
 						}
 					},
 					"regex": "/.*backend.*/",

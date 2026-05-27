@@ -3,21 +3,10 @@
 	"kind": "Dashboard",
 	"metadata": {
 		"name": "pMEd7m0Mz",
-		"namespace": "default",
-		"uid": "31b14248-05e3-45dc-9acf-9b508e930f08",
-		"resourceVersion": "1777390082617990",
-		"generation": 13,
-		"creationTimestamp": "2026-04-28T13:59:59Z",
-		"labels": {
-			"grafana.app/deprecatedInternalID": "4492252148625408"
-		},
-		"annotations": {
-			"grafana.app/createdBy": "user:afkg7oabos2kga",
-			"grafana.app/folder": "",
-			"grafana.app/saved-from-ui": "Grafana v13.0.1 (a100054f)",
-			"grafana.app/updatedBy": "user:afkg7oabos2kga",
-			"grafana.app/updatedTimestamp": "2026-04-28T15:28:02Z"
-		}
+		"generation": 2,
+		"creationTimestamp": "2026-05-27T15:12:24Z",
+		"labels": {},
+		"annotations": {}
 	},
 	"spec": {
 		"annotations": [
@@ -60,15 +49,15 @@
 											"kind": "DataQuery",
 											"group": "prometheus",
 											"version": "v0",
-											"datasource": {
-												"name": "PBFA97CFB590B2093"
-											},
 											"spec": {
 												"editorMode": "code",
 												"expr": "sum(container_memory_cache{instance=~\"$host\",container_label_com_docker_swarm_service_name=~\"$container\",container_label_com_docker_swarm_service_name=~\".+\"}) by (container_label_com_docker_swarm_service_name)",
 												"interval": "",
 												"legendFormat": "{{name}}",
 												"range": true
+											},
+											"labels": {
+												"grafana.app/export-label": "prometheus-1"
 											}
 										},
 										"refId": "A",
@@ -181,15 +170,15 @@
 											"kind": "DataQuery",
 											"group": "prometheus",
 											"version": "v0",
-											"datasource": {
-												"name": "PBFA97CFB590B2093"
-											},
 											"spec": {
 												"editorMode": "code",
 												"expr": "sum(rate(container_cpu_usage_seconds_total{instance=~\"$host\", container_label_com_docker_swarm_service_name=~\"$container\"}[5m])) by (container_label_com_docker_swarm_service_name) * 100",
 												"interval": "",
 												"legendFormat": "{{name}}",
 												"range": true
+											},
+											"labels": {
+												"grafana.app/export-label": "prometheus-1"
 											}
 										},
 										"refId": "A",
@@ -302,9 +291,6 @@
 											"kind": "DataQuery",
 											"group": "prometheus",
 											"version": "v0",
-											"datasource": {
-												"name": "PBFA97CFB590B2093"
-											},
 											"spec": {
 												"editorMode": "code",
 												"expr": "(time() - container_start_time_seconds{instance=~\"$host\",container_label_com_docker_swarm_service_name=~\"$container\",container_label_com_docker_swarm_service_name=~\".+\"})/86400",
@@ -312,6 +298,9 @@
 												"instant": true,
 												"interval": "",
 												"legendFormat": "{{name}}"
+											},
+											"labels": {
+												"grafana.app/export-label": "prometheus-1"
 											}
 										},
 										"refId": "A",
@@ -465,15 +454,15 @@
 											"kind": "DataQuery",
 											"group": "prometheus",
 											"version": "v0",
-											"datasource": {
-												"name": "PBFA97CFB590B2093"
-											},
 											"spec": {
 												"editorMode": "code",
 												"expr": "sum(rate(container_network_receive_bytes_total{instance=~\"$host\",container_label_com_docker_swarm_service_name=~\"$container\",container_label_com_docker_swarm_service_name=~\".+\"}[5m])) by (container_label_com_docker_swarm_service_name)",
 												"interval": "",
 												"legendFormat": "{{name}}",
 												"range": true
+											},
+											"labels": {
+												"grafana.app/export-label": "prometheus-1"
 											}
 										},
 										"refId": "A",
@@ -586,15 +575,15 @@
 											"kind": "DataQuery",
 											"group": "prometheus",
 											"version": "v0",
-											"datasource": {
-												"name": "PBFA97CFB590B2093"
-											},
 											"spec": {
 												"editorMode": "code",
 												"expr": "sum(rate(container_network_transmit_bytes_total{instance=~\"$host\",container_label_com_docker_swarm_service_name=~\"$container\",container_label_com_docker_swarm_service_name=~\".+\"}[5m])) by (container_label_com_docker_swarm_service_name)",
 												"interval": "",
 												"legendFormat": "{{name}}",
 												"range": true
+											},
+											"labels": {
+												"grafana.app/export-label": "prometheus-1"
 											}
 										},
 										"refId": "A",
@@ -707,15 +696,15 @@
 											"kind": "DataQuery",
 											"group": "prometheus",
 											"version": "v0",
-											"datasource": {
-												"name": "PBFA97CFB590B2093"
-											},
 											"spec": {
 												"editorMode": "code",
 												"expr": "sum(container_memory_rss{instance=~\"$host\",container_label_com_docker_swarm_service_name=~\"$container\",container_label_com_docker_swarm_service_name=~\".+\"}) by (name)",
 												"interval": "",
 												"legendFormat": "{{name}}",
 												"range": true
+											},
+											"labels": {
+												"grafana.app/export-label": "prometheus-1"
 											}
 										},
 										"refId": "A",
@@ -994,13 +983,13 @@
 						"kind": "DataQuery",
 						"group": "prometheus",
 						"version": "v0",
-						"datasource": {
-							"name": "PBFA97CFB590B2093"
-						},
 						"spec": {
 							"qryType": 1,
 							"query": "label_values(up{job=\"cadvisor\"},instance)",
 							"refId": "PrometheusVariableQueryEditor-VariableQuery"
+						},
+						"labels": {
+							"grafana.app/export-label": "prometheus-1"
 						}
 					},
 					"regex": "",
@@ -1029,13 +1018,13 @@
 						"kind": "DataQuery",
 						"group": "prometheus",
 						"version": "v0",
-						"datasource": {
-							"name": "PBFA97CFB590B2093"
-						},
 						"spec": {
 							"qryType": 1,
 							"query": "label_values({job=\"cadvisor\"},container_label_com_docker_swarm_service_name)",
 							"refId": "PrometheusVariableQueryEditor-VariableQuery"
+						},
+						"labels": {
+							"grafana.app/export-label": "prometheus-1"
 						}
 					},
 					"regex": "",

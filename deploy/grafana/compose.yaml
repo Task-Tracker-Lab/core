@@ -2,19 +2,53 @@ services:
   grafana:
     image: grafana/grafana:latest
     environment:
-      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD:-admin}
       - GF_SERVER_HTTP_PORT=2000
       - GF_USERS_ALLOW_SIGN_UP=false
       - GF_AUTH_DISABLE_LOGIN_FORM=false
       - GF_USERS_ALLOW_ORG_CREATE=false
       - GF_AUTH_ANONYMOUS_ENABLED=false
+      - GF_SECURITY_COOKIE_SECURE=true
+      - GF_SECURITY_ALLOW_EMBEDDING=false
+      - GF_ANALYTICS_REPORTING_ENABLED=false
+      - GF_ANALYTICS_CHECK_FOR_UPDATES=false
+      - GF_SERVER_ROOT_URL=https://grafana.${DOMAIN}/
+      - GF_LOG_LEVEL=warn
+      - GF_LOG_MODE=console
+
+      - LOKI_HTTP_PORT=${LOKI_HTTP_PORT}
+      - TEMPO_PORT=${TEMPO_PORT}
+
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_DATABASE=${DB_DATABASE}
+      - DB_PASSWORD=${DB_PASSWORD}
+
+      - TELEGRAM_CHAT_ID=${TELEGRAM_CHAT_ID}
+      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
+      - TELEGRAM_CHAT_TOPIC_ID=${TELEGRAM_CHAT_TOPIC_ID}
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "wget --no-verbose --tries=1 --spider http://localhost:2000/api/health || exit 1",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
     networks:
-      - monitoring
       - proxy
+      - monitoring
     configs:
       - source: grafana_datasources
         target: /etc/grafana/provisioning/datasources/datasources.yaml
-      - source: grafana_dashboards_rules
+
+      - source: grafana_alerts
+        target: /etc/grafana/provisioning/alerts/alerts.yaml
+
+      - source: grafana_contact
+        target: /etc/grafana/provisioning/alerts/contact.yaml
+
+      - source: grafana_dashboards
         target: /etc/grafana/provisioning/dashboards/dashboards.yaml
     volumes:
       - grafana:/var/lib/grafana
@@ -22,7 +56,7 @@ services:
     deploy:
       replicas: 1
       placement:
-        constraints: [ node.role == manager ]
+        constraints: [node.role == manager]
       resources:
         limits:
           cpus: "0.30"
@@ -32,10 +66,14 @@ services:
           memory: 256M
 
 configs:
+  grafana_alerts:
+    file: ./configs/alerts.yaml
+  grafana_contact:
+    file: ./alerts/contact.yaml
+  grafana_dashboards:
+    file: ./configs/dashboards.yaml
   grafana_datasources:
     file: ./configs/datasources.yaml
-  grafana_dashboards_rules:
-    file: ./configs/dashboards.yaml
 
 volumes:
   grafana:

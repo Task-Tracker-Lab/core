@@ -1,0 +1,289 @@
+apiVersion: 1
+groups:
+    - orgId: 1
+      name: resources
+      folder: Infrastructure
+      interval: 1m
+      rules:
+        - uid: bfncbatrgm8e8b
+          title: Host Disk Space Running Out
+          condition: C
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 3600
+                to: 0
+              datasourceUid: PBFA97CFB590B2093
+              model:
+                editorMode: code
+                exemplar: false
+                expr: node_filesystem_free_bytes{fstype=~"ext4|xfs", mountpoint="/"} / node_filesystem_size_bytes{fstype=~"ext4|xfs", mountpoint="/"} * 100
+                instant: false
+                intervalMs: 1000
+                legendFormat: __auto
+                maxDataPoints: 43200
+                range: true
+                refId: A
+            - refId: C
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 0
+                            - 0
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params: []
+                      reducer:
+                        params: []
+                        type: avg
+                      type: query
+                datasource:
+                    name: Expression
+                    type: __expr__
+                    uid: __expr__
+                expression: $B < 15
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: math
+            - refId: B
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 0
+                            - 0
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params: []
+                      reducer:
+                        params: []
+                        type: avg
+                      type: query
+                datasource:
+                    name: Expression
+                    type: __expr__
+                    uid: __expr__
+                expression: A
+                intervalMs: 1000
+                maxDataPoints: 43200
+                reducer: last
+                refId: B
+                type: reduce
+          dashboardUid: adw7jmg
+          panelId: 43
+          noDataState: KeepLast
+          execErrState: Alerting
+          for: 5m
+          annotations:
+            __dashboardUid__: adw7jmg
+            __panelId__: "43"
+            summary: "🔴 <b>[CRIT] Host Disk Space Running Out</b> на хосте <code>{{ $labels.instance }}</code>"
+            description: |
+              🚨 <b>Обнаружена проблема с дисковым пространством!</b>
+
+              🖥️ <b>Хост:</b> <code>{{ $labels.instance }}</code>
+              📁 <b>Точка монтирования:</b> <code>{{ $labels.mountpoint }}</code>
+
+              📉 <b>Текущее состояние:</b> Свободного места осталось всего <code>{{ printf "%.2f" $values.B.Value }}%</code>.
+
+              ⚡ <b>Рекомендуемые действия:</b>
+              1. Очистить неиспользуемые объекты Docker:
+              <code>docker system prune -a --volumes</code>
+              2. Проверить распределение памяти на диске:
+              <code>df -h</code> или <code>du -sh /*</code>
+              3. Проверить ротацию системных логов и сервисов.
+          labels: {}
+          isPaused: false
+          notification_settings:
+            receiver: Alert Bot
+        - uid: cfncdj3ef04xsd
+          title: Host High Memory Usage
+          condition: C
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 300
+                to: 0
+              datasourceUid: PBFA97CFB590B2093
+              model:
+                editorMode: code
+                expr: (node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) / node_memory_MemTotal_bytes * 100
+                instant: false
+                intervalMs: 1000
+                legendFormat: __auto
+                maxDataPoints: 43200
+                range: true
+                refId: A
+            - refId: B
+              queryType: expression
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 0
+                            - 0
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params: []
+                      reducer:
+                        params: []
+                        type: avg
+                      type: query
+                datasource:
+                    name: Expression
+                    type: __expr__
+                    uid: __expr__
+                expression: A
+                intervalMs: 1000
+                maxDataPoints: 43200
+                reducer: last
+                refId: B
+                type: reduce
+            - refId: C
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 90
+                            - 0
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params: []
+                      reducer:
+                        params: []
+                        type: avg
+                      type: query
+                datasource:
+                    name: Expression
+                    type: __expr__
+                    uid: __expr__
+                expression: B
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: threshold
+          noDataState: KeepLast
+          execErrState: Alerting
+          for: 1m
+          annotations:
+            summary: "🟡 <b>[WARN] Host High Memory Usage</b> на хосте <code>{{ $labels.instance }}</code>"
+            description: |
+              ⚠️ <b>Обнаружено высокое потребление оперативной памяти!</b>
+
+              🖥️ <b>Хост:</b> <code>{{ $labels.instance }}</code>
+
+              📉 <b>Текущее состояние:</b> Использовано более 90% памяти. Текущее значение: <code>{{ printf "%.2f" $value }}%</code>.
+
+              ⚡ <b>Рекомендуемые действия:</b>
+              1. Проверить топ процессов по потреблению памяти:
+              <code>top -o %MEM</code> или <code>htop</code>
+              2. Убедиться, что утечки памяти в запущенных приложениях отсутствуют.
+          isPaused: false
+          notification_settings:
+            receiver: Alert Bot
+        - uid: cfnceh2olvksgb
+          title: Host Memory OOM
+          condition: C
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 300
+                to: 0
+              datasourceUid: PBFA97CFB590B2093
+              model:
+                editorMode: code
+                expr: increase(node_vmstat_oom_kill[5m])
+                instant: false
+                intervalMs: 1000
+                legendFormat: __auto
+                maxDataPoints: 43200
+                range: true
+                refId: A
+            - refId: reducer
+              queryType: expression
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 0
+                            - 0
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params: []
+                      reducer:
+                        params: []
+                        type: avg
+                      type: query
+                datasource:
+                    name: Expression
+                    type: __expr__
+                    uid: __expr__
+                expression: A
+                intervalMs: 1000
+                maxDataPoints: 43200
+                reducer: last
+                refId: reducer
+                type: reduce
+            - refId: C
+              queryType: expression
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 0
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - C
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: __expr__
+                expression: reducer
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: threshold
+          noDataState: NoData
+          execErrState: Error
+          for: 1m
+          annotations:
+            summary: "🔴 <b>[CRIT] Host Memory OOM Killed</b> на хосте <code>{{ $labels.instance }}</code>"
+            description: |
+              💥 <b>Критическая нехватка памяти! Сработал OOM Killer.</b>
+
+              🖥️ <b>Хост:</b> <code>{{ $labels.instance }}</code>
+
+              📉 <b>Текущее состояние:</b> За последние 5 минут система была вынуждена принудительно завершить один или несколько процессов из-за дефицита RAM.
+
+              ⚡ <b>Рекомендуемые действия:</b>
+              1. Найти в системном логе, какой именно процесс был убит:
+              <code>dmesg -T | grep -i oom</code> или <code>journalctl -k | grep -i oom</code>
+              2. Оптимизировать лимиты памяти для упавшего процесса или рассмотреть апгрейд ресурсов хоста.
+          isPaused: false
+          notification_settings:
+            receiver: Alert Bot

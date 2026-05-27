@@ -1,9 +1,9 @@
 apiVersion: 1
 
 providers:
-  - name: 'Task Tracker'
+  - name: 'Task Tracker Dashboards'
     orgId: 1
-    folder: ''
+    folder: 'Task Tracker'
     type: file
     disableDeletion: false
     editable: true
